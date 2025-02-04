@@ -67,19 +67,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDto completeTask(Long id) {
+    public TaskDto updateTaskStatus(Long id , TaskStatus taskStatus) {
         Task existingTask = taskRepository.findById(id).
                 orElseThrow(()-> new ResourceNotFound("Task not found with id : "+id));
-        existingTask.setTaskStatus(TaskStatus.COMPLETED);
-        taskRepository.save(existingTask);
-        return modelMapper.map(existingTask,TaskDto.class);
-    }
-
-    @Override
-    public TaskDto cancelTask(Long id) {
-        Task existingTask = taskRepository.findById(id).
-                orElseThrow(()-> new ResourceNotFound("Task not found with id :"+id));
-        existingTask.setTaskStatus(TaskStatus.CANCELED);
+        existingTask.setTaskStatus(taskStatus);
         taskRepository.save(existingTask);
         return modelMapper.map(existingTask,TaskDto.class);
     }
